@@ -4,6 +4,7 @@
 
 import requests
 import sys
+import os
 from xml.etree import ElementTree
 
 def main():
@@ -26,6 +27,9 @@ def main():
         sys.stdout.flush()
         # print(url)
         name = url.split('/')[-1]
+        if os.path.exists(name):
+            print("File {} already exists, skipping.".format(name))
+            continue
         resp = requests.get(url, stream=True)
         with open(name, 'wb') as fout:
             for chunk in resp.iter_content(1024*32):
